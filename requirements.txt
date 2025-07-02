@@ -1,0 +1,6 @@
+torch>=2.0.0
+diffusers>=0.25.0
+accelerate>=0.28
+runpod>=1.7.0
+safetensors>=0.4
+Pillow 

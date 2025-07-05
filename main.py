@@ -46,9 +46,16 @@ SIG = inspect.signature(PIPE.__call__)
 INPUT_SCHEMA = {}
 for name, p in SIG.parameters.items():
     if p.kind in (p.POSITIONAL_OR_KEYWORD, p.KEYWORD_ONLY):
-        INPUT_SCHEMA[name] = {"type": (int if p.annotation is int
-                                       else float if p.annotation is float
-                                       else str),
+        # Fix type detection - many parameters don't have proper annotations
+        param_type = str  # Default to string
+        if p.annotation is int or (hasattr(p, 'default') and isinstance(p.default, int)):
+            param_type = int
+        elif p.annotation is float or (hasattr(p, 'default') and isinstance(p.default, float)):
+            param_type = float
+        elif name in ['height', 'width', 'num_inference_steps', 'num_images_per_prompt']:
+            param_type = int  # Common integer parameters
+            
+        INPUT_SCHEMA[name] = {"type": param_type,
                               "required": p.default is p.empty,
                               "default": None if p.default is p.empty else p.default}
 

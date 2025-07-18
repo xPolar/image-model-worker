@@ -10,13 +10,6 @@
   - [x] Build model metadata extraction utilities
   - [x] Create model compatibility checking logic
 
-- [ ] **Basic Model Registry**
-  - [ ] Set up file-based model metadata storage (JSON/YAML)
-  - [ ] Design file structure for model information
-  - [ ] Create basic file operations for model registry
-  - [ ] Implement model versioning with file naming
-  - [ ] Add model dependency tracking in metadata files
-
 - [x] **Unified Loading Interface**
   - [x] Design abstract base class for model loaders
   - [x] Implement factory pattern for different model types

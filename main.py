@@ -389,11 +389,7 @@ class SchemaGenerator:
                 if param.annotation.__origin__ is list:
                     return list
         
-        # Check default value type
-        if hasattr(param, 'default') and param.default is not param.empty:
-            return type(param.default)
-        
-        # Parameter name-based type inference
+        # Parameter name-based type inference (prioritized over default value type)
         int_params = {
             'height', 'width', 'num_inference_steps', 'num_images_per_prompt',
             'seed', 'steps', 'batch_size', 'num_images', 'clip_skip'
@@ -416,6 +412,13 @@ class SchemaGenerator:
             return str
         elif 'image' in name:
             return 'image'  # Special type for images
+        
+        # Check default value type (only if not caught by name-based inference)
+        if hasattr(param, 'default') and param.default is not param.empty:
+            default_type = type(param.default)
+            # Don't return NoneType for parameters that should have meaningful types
+            if default_type is not type(None):
+                return default_type
         
         # Default to string
         return str
